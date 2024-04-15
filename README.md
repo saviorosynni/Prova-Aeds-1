@@ -1,5 +1,4 @@
-Construa um algoritmo em C para criar o jogo do Monty Hall. Você precisará utilizar a
-função srand() da biblioteca <stdlib.h> para inicializar o gerador de números
+lo gerador de números
 pseudoaleatórios e a função rand() para gerar o número pseudoaleatório (sortear a porta
 premiada). Na Dica 2 você encontrará o código para realizar este sorteio.
 3
@@ -58,3 +57,49 @@ Simulação do jogo (trocando de porta: s):
 (Trocar de porta que não pode ser a portaEscolhida originalmente nem a portaVazia.
 => Você trocou para a porta 2.
 => Você ganhou! Parabéns!
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main() {
+    int portaPremiada, portaEscolhida, portaVazia, novaPorta;
+    char opcao;
+
+    srand(time(NULL)); // Inicializa a semente para a função rand()
+
+    // Sortear a porta premiada
+    portaPremiada = rand() % 3 + 1;
+
+    printf("Bem-vindo ao jogo Monty Hall!\n");
+    printf("Escolha uma porta (1, 2 ou 3): ");
+    scanf("%d", &portaEscolhida);
+
+    // Determinar a porta vazia que não pode ser a porta escolhida nem a premiada
+    do {
+        portaVazia = rand() % 3 + 1;
+    } while (portaVazia == portaEscolhida || portaVazia == portaPremiada);
+
+    printf("O apresentador abriu a porta %d que está vazia.\n", portaVazia);
+
+    printf("Você deseja trocar para a outra porta? (s/n): ");
+    scanf(" %c", &opcao);
+
+    if (opcao == 's') {
+        // Trocar de porta que não pode ser a porta escolhida originalmente nem a porta vazia
+        do {
+            novaPorta = rand() % 3 + 1;
+        } while (novaPorta == portaEscolhida || novaPorta == portaVazia);
+
+        portaEscolhida = novaPorta;
+    }
+
+    if (portaEscolhida == portaPremiada) {
+        printf("Você ganhou! Parabéns!\n");
+    } else {
+        printf("Você perdeu. A porta premiada era a %d.\n", portaPremiada);
+    }
+
+    return 0;
+}
+
